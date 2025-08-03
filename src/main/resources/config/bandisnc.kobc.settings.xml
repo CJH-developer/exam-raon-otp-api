@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+
+<properties>
+
+    <!-- ONE PASS URL -->
+    <entry key="ONE_PASS_URL">https://otp.kobc.or.kr:9443/interfBiz/requestOnepassService.do</entry>
+    <!-- TouchEn URL -->
+    <entry key="TOUCH_EN_URL">https://motp.url:8080/motp</entry>
+
+    <!-- OTP 서비스 등록 -->
+    <entry key="ONE_PASS_ADD_COMMAND">requestServiceRegist</entry>
+    <!-- OTP 2차인증 서비스 요청 -->
+    <entry key="ONE_PASS_AUTH_COMMAND">requestServiceAuth</entry>
+    <!-- OTP 번호 검증 요청 -->
+    <entry key="ONE_PASS_VERIFY_COMMAND">requestVerifyOtp</entry>
+    <!-- OTP 서비스 해지 -->
+    <entry key="ONE_PASS_REVOKE_COMMAND">requestServiceRelease</entry>
+
+    <!-- 사이트 식별자 -->
+    <entry key="SITE_ID">SIT01KOBC00000000000</entry>
+    <!-- 서비스 식별자 -->
+    <entry key="SVC_ID">SVC01SIT01KOBC000000</entry>
+    <!-- 인증 타입 -->
+    <entry key="AUTH_TYPE">OTP02</entry>
+
+</properties>
+
+

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인 성공</title>
+</head>
+<body>
+    <p th:text="${session.s_id}"></p>
+    <form th:action="@{/revoke}" method="post" >
+        <button type="submit">서비스 해지</button>
+        <p th:if="${msg}" th:text="${msg}"></p>
+    </form>
+</body>
+</html>

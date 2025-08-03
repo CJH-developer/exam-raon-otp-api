@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>기본화면</title>
+    <style>
+        .container {
+            margin-bottom: 30px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div th:if="${step == null or step == 'login'}" class="wrap">
+    <div id="loginForm" class="container">
+        <h1>로그인</h1>
+        <p th:if="${msg}" th:text="${msg}"></p>
+        <form th:action="@{/loginForm}" method="post" id="loginForming" onsubmit="return validateLogin()">
+            <label for="loginId">아이디</label>
+            <input type="text" name="id" id="loginId"><br/>
+            <label for="loginPassword">비밀번호</label>
+            <input type="password" name="password" id="loginPassword"><br/>
+            <button type="submit" onclick="setLoginAction('/login/mobile')">모바일 로그인</button>
+            <button type="submit" onclick="setLoginAction('/login/sms')">SMS 로그인</button>
+            <button type="submit" onclick="setLoginAction('/login/web')">web 로그인</button>
+            <button type="submit" onclick="setLoginAction('/login/email')">email 로그인</button>
+            <button type="submit" onclick="setLoginAction('/login/pc')">pc 로그인</button>
+        </form>
+        <p>아직 회원이 아니신가요? <button onclick="showSignup()">회원가입</button></p>
+    </div>
+
+    <div id="signupForm" class="container hidden">
+        <h1>회원가입</h1>
+        <form th:action="@{/signForm}" method="post" onsubmit="return validateSignup()">
+            <label for="signupId">아이디</label>
+            <input type="text" name="id" id="signupId"><br/>
+            <label for="signupName">이름</label>
+            <input type="text" name="name" id="signupName"><br/>
+            <label for="signupPassword">비밀번호</label>
+            <input type="password" name="password" id="signupPassword"><br/>
+            <button type="submit">회원가입</button>
+        </form>
+        <p>이미 계정이 있으신가요? <button onclick="showLogin()">로그인</button></p>
+    </div>
+</div>
+
+
+<div th:if="${step == 'device'}" class="wrap">
+    <h1>장비등록</h1>
+    <p th:if="${msg}" th:text="${msg}"></p>
+    <form th:action="@{/add}" method="post">
+        <label for="deviceId">장비번호</label>
+        <input type="text" name="deviceId" id="deviceId"><br/>
+        <button type="submit">장비등록</button>
+    </form>
+</div>
+
+<div th:if="${step == 'otp'}" class="wrap">
+    <h1>OTP번호인증</h1>
+    <p th:if="${msg}" th:text="${msg}"></p>
+    <form th:action="@{/verify}" method="post">
+        <label for="otpValue">OTP 번호</label>
+        <input type="text" name="otpValue" id="otpValue"><br/>
+        <button type="submit">OTP번호인증</button>
+    </form>
+</div>
+
+<script>
+    function showLogin() {
+        document.getElementById("loginForm").classList.remove("hidden");
+        document.getElementById("signupForm").classList.add("hidden");
+    }
+
+    function showSignup() {
+        document.getElementById("signupForm").classList.remove("hidden");
+        document.getElementById("loginForm").classList.add("hidden");
+    }
+
+    function validateLogin() {
+        const id = document.getElementById("loginId").value.trim();
+        const password = document.getElementById("loginPassword").value.trim();
+
+        if (!id || !password) {
+            alert("아이디와 비밀번호를 모두 입력해주세요.");
+            return false; // 전송 막기
+        }
+
+        return true;
+    }
+
+    // 회원가입 폼 유효성 검사
+    function validateSignup() {
+        const id = document.getElementById("signupId").value.trim();
+        const name = document.getElementById("signupName").value.trim();
+        const password = document.getElementById("signupPassword").value.trim();
+
+        if (!id || !name || !password) {
+            alert("모든 항목을 입력해주세요.");
+            return false; // 전송 막기
+        }
+
+        return true;
+    }
+
+    function setLoginAction(actionUrl) {
+        const form = document.getElementById('loginForming');
+        form.action = actionUrl;
+    }
+</script>
+
+</body>
+</html>
