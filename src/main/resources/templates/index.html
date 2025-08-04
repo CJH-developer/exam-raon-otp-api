@@ -13,6 +13,9 @@
     </style>
 </head>
 <body>
+<h1>API 테스트</h1>
+<a th:if="${step == 'login' or step == 'device' or step == 'otp'}" th:href="@{/logout}">로그아웃</a>
+
 <div th:if="${step == null or step == 'login'}" class="wrap">
     <div id="loginForm" class="container">
         <h1>로그인</h1>

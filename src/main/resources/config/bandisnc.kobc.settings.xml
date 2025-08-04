@@ -19,10 +19,18 @@
 
     <!-- 사이트 식별자 -->
     <entry key="SITE_ID">SIT01KOBC00000000000</entry>
+
     <!-- 서비스 식별자 -->
     <entry key="SVC_ID">SVC01SIT01KOBC000000</entry>
-    <!-- 인증 타입 -->
-    <entry key="AUTH_TYPE">OTP02</entry>
+
+    <!-- 인증 타입
+         - Mobile : OTP01
+         - SMS : OTP02
+         - WEB : 0TP03
+         - PC  : OTP04
+         - EMAIL : OTP05
+     -->
+    <entry key="AUTH_TYPE">OTP01</entry>
 
 </properties>
 

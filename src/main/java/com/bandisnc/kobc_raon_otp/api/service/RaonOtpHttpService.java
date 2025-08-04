@@ -13,7 +13,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashMap;
 import java.util.Map;
 
-@Service
+@Service(value = "RaonOtpHttpService")
 @RequiredArgsConstructor
 public class RaonOtpHttpService {
 
@@ -31,6 +31,13 @@ public class RaonOtpHttpService {
     @Value("${AUTH_TYPE}")
     private String authType;
 
+    /**
+     * 장비 등록
+     * @param command 메서드
+     * @param userId 사용자 ID
+     * @param deviceId 장비 ID
+     * @return
+     */
     public ResponseDTO sendOnePassAddRequest(String command, String userId, String deviceId) {
         Map<String, String> map = new HashMap<>();
         map.put("command", command);
@@ -57,6 +64,14 @@ public class RaonOtpHttpService {
         }
     }
 
+    /**
+     * OTP 서비스 인증
+     * @param command 메서드
+     * @param user_id 사용자 ID
+     * @param deviceId 장비 ID
+     * @param trId 서비스 ID
+     * @return
+     */
     public ResponseDTO sendOnePassAuthRequest( String command, String user_id, String deviceId, String trId) {
         Map<String, String> map = new HashMap<>();
 
@@ -86,7 +101,13 @@ public class RaonOtpHttpService {
         }
     }
 
-
+    /**
+     * OTP 번호 검증
+     * @param command 메서드
+     * @param trId 서비스 ID
+     * @param otpValue OTP 번호
+     * @return
+     */
     public ResponseDTO sendOnePassVerifyRequest(String command, String trId, String otpValue) {
         Map<String, String> map = new HashMap<>();
         map.put("command", command);
@@ -111,7 +132,12 @@ public class RaonOtpHttpService {
         }
     }
 
-
+    /**
+     * OTP 서비스 해제
+     * @param command 메서드
+     * @param user_id 사용자 ID
+     * @return
+     */
     public ResponseDTO sendOnePassRevokeReQuest(String command, String user_id) {
         Map<String, String> map = new HashMap<>();
         map.put("command", command);

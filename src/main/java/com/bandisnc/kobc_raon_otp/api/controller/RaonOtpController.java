@@ -5,6 +5,8 @@ import com.bandisnc.kobc_raon_otp.common.entity.RequestEntity;
 import com.bandisnc.kobc_raon_otp.common.repository.RequestRepository;
 import com.bandisnc.kobc_raon_otp.api.service.RaonOtpService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +18,18 @@ import javax.servlet.http.HttpSession;
 @RequiredArgsConstructor
 public class RaonOtpController {
 
+    @Autowired
     private final RaonOtpService raonOtpService;
 
     private final RequestRepository requestRepository;
 
+    /**
+     * 장비 동록 
+     * @param deviceId
+     * @param session
+     * @param model
+     * @return
+     */
     @PostMapping("/add")
     public String add(@RequestParam String deviceId, HttpSession session, Model model){
         String user_id = (String) session.getAttribute("s_id");
@@ -34,10 +44,10 @@ public class RaonOtpController {
                 requestRepository.save(requestEntity);
             }
             ResponseDTO authReuslt = raonOtpService.auth(user_id, deviceId, responseDTO.getResultData().getTrId());
-            if(authReuslt.getResultCode().equals("100")){
+            if(authReuslt.getResultCode().equals("000")){
                 model.addAttribute("step", "otp");
                 return "index";
-                // 2.2 인증 실패 시, 장비 재등록
+            // 2.2 인증 실패 시, 장비 재등록
             }else{
                 model.addAttribute("step", "device");
                 model.addAttribute("msg", "OTP 서비스 인증에 실패하였습니다. 장비를 다시 등록해주세요.");
@@ -50,15 +60,35 @@ public class RaonOtpController {
         }
     }
 
+    /**
+     * OTP 서비스 인증
+     * @param otpValue
+     * @param session
+     * @param model
+     * @return
+     */
     @PostMapping("/verify")
     public String verify(@RequestParam String otpValue, HttpSession session, Model model){
         String user_id = (String) session.getAttribute("s_id");
+
         RequestEntity requestEntity = requestRepository.findById(user_id).orElse(null);
+        if(requestEntity == null){
+            model.addAttribute("step", "login");
+            return "redirect:/";
+        }
+
+        if(requestEntity.getTrId().isEmpty()){
+            raonOtpService.add(user_id, requestEntity.getDeviceId());
+        }
         String trId = requestEntity.getTrId();
 
         ResponseDTO responseDTO = raonOtpService.verify(trId, otpValue);
         if(responseDTO.getResultCode().equals("000")) {
             return "loginProcess";
+        }else if(responseDTO.getResultCode().equals("102")){
+            model.addAttribute("msg", responseDTO.getResultMsg());
+            model.addAttribute("step", "device");
+            return "index";
         }else{
             model.addAttribute("msg", responseDTO.getResultMsg());
             model.addAttribute("step", "otp");
@@ -66,6 +96,12 @@ public class RaonOtpController {
         }
     }
 
+    /**
+     * OTP 서비스 해제
+     * @param session
+     * @param model
+     * @return
+     */
     @PostMapping("/revoke")
     public String revoke(HttpSession session, Model model){
         String user_id = (String) session.getAttribute("s_id");

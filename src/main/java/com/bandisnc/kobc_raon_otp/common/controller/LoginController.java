@@ -7,6 +7,7 @@ import com.bandisnc.kobc_raon_otp.api.service.RaonOtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.servlet.http.HttpSession;
@@ -19,6 +20,16 @@ public class LoginController {
 
     private final RaonOtpService raonOtpService;
 
+    /**
+     * 로그인 프로세스
+     * 1. 기본 사용자 로그인
+     * 2. 장비 등록 여부 확인
+     * 3. 등록된 장비가 없다면 -> 장비 등록 화면 전달
+     * 4. 등록된 장비가 있다면 -> OTP 서비스 인증
+     * 5. 인증 성공 시 -> OTP 번호 입력 요청
+     * 6. 인증 실패 시 -> 장비 재등록 화면 전달
+     * 7. 기본 로그인 실패 시 -> 로그인 화면 전달
+     */
     @PostMapping("/loginForm")
     public String loginMobile(RequestDTO requestDTO, HttpSession session, Model model) {
         RequestDTO result = requestService.login(requestDTO);
@@ -35,7 +46,7 @@ public class LoginController {
             }else{
                 ResponseDTO authReuslt = raonOtpService.auth( result.getDeviceId(), result.getDeviceId(), result.getTrId());
                 // 2.1 인증 성공 시, otp 번호 입력 요청
-                if(authReuslt.getResultCode().equals("100")){
+                if(authReuslt.getResultCode().equals("000")){
                     model.addAttribute("step", "otp");
                     return "index";
                 // 2.2 인증 실패 시, 장비 재등록
@@ -49,6 +60,12 @@ public class LoginController {
             model.addAttribute("msg", "로그인에 실패하였습니다.");
             return "index";
         }
+    }
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session, Model model){
+        session.invalidate();
+        return "redirect:/";
     }
 
 }
