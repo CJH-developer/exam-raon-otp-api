@@ -1,4 +1,4 @@
-package com.bandisnc.kobc_raon_otp.mobile.service;
+package com.bandisnc.kobc_raon_otp.api.service;
 
 import com.bandisnc.kobc_raon_otp.common.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class MobileHttpService {
+public class RaonOtpHttpService {
 
     private final RestTemplate restTemplate;
 

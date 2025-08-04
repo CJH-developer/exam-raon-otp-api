@@ -17,16 +17,12 @@
     <div id="loginForm" class="container">
         <h1>로그인</h1>
         <p th:if="${msg}" th:text="${msg}"></p>
-        <form th:action="@{/loginForm}" method="post" id="loginForming" onsubmit="return validateLogin()">
+        <form th:action="@{/loginForm}" method="post" onsubmit="return validateLogin()">
             <label for="loginId">아이디</label>
             <input type="text" name="id" id="loginId"><br/>
             <label for="loginPassword">비밀번호</label>
             <input type="password" name="password" id="loginPassword"><br/>
-            <button type="submit" onclick="setLoginAction('/login/mobile')">모바일 로그인</button>
-            <button type="submit" onclick="setLoginAction('/login/sms')">SMS 로그인</button>
-            <button type="submit" onclick="setLoginAction('/login/web')">web 로그인</button>
-            <button type="submit" onclick="setLoginAction('/login/email')">email 로그인</button>
-            <button type="submit" onclick="setLoginAction('/login/pc')">pc 로그인</button>
+            <button type="submit">로그인</button>
         </form>
         <p>아직 회원이 아니신가요? <button onclick="showSignup()">회원가입</button></p>
     </div>
@@ -104,10 +100,6 @@
         return true;
     }
 
-    function setLoginAction(actionUrl) {
-        const form = document.getElementById('loginForming');
-        form.action = actionUrl;
-    }
 </script>
 
 </body>

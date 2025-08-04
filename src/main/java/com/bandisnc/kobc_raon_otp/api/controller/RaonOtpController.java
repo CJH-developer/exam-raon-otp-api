@@ -1,10 +1,9 @@
-package com.bandisnc.kobc_raon_otp.mobile.controller;
+package com.bandisnc.kobc_raon_otp.api.controller;
 
-import com.bandisnc.kobc_raon_otp.common.dto.RequestDTO;
 import com.bandisnc.kobc_raon_otp.common.dto.ResponseDTO;
 import com.bandisnc.kobc_raon_otp.common.entity.RequestEntity;
 import com.bandisnc.kobc_raon_otp.common.repository.RequestRepository;
-import com.bandisnc.kobc_raon_otp.mobile.service.MobileService;
+import com.bandisnc.kobc_raon_otp.api.service.RaonOtpService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,16 +14,16 @@ import javax.servlet.http.HttpSession;
 
 @Controller
 @RequiredArgsConstructor
-public class MobileController {
+public class RaonOtpController {
 
-    private final MobileService mobileService;
+    private final RaonOtpService raonOtpService;
 
     private final RequestRepository requestRepository;
 
     @PostMapping("/add")
     public String add(@RequestParam String deviceId, HttpSession session, Model model){
         String user_id = (String) session.getAttribute("s_id");
-        ResponseDTO responseDTO = mobileService.add(user_id, deviceId);
+        ResponseDTO responseDTO = raonOtpService.add(user_id, deviceId);
         
         // 장비 등록 성공 시 입력한 deviceId 저장 및 응답메세지의 TrId 저장
         if(responseDTO.getResultCode().equals("000")) {
@@ -34,7 +33,7 @@ public class MobileController {
                 requestEntity.setTrId(responseDTO.getResultData().getTrId());
                 requestRepository.save(requestEntity);
             }
-            ResponseDTO authReuslt = mobileService.auth(user_id, deviceId, responseDTO.getResultData().getTrId());
+            ResponseDTO authReuslt = raonOtpService.auth(user_id, deviceId, responseDTO.getResultData().getTrId());
             if(authReuslt.getResultCode().equals("100")){
                 model.addAttribute("step", "otp");
                 return "index";
@@ -57,7 +56,7 @@ public class MobileController {
         RequestEntity requestEntity = requestRepository.findById(user_id).orElse(null);
         String trId = requestEntity.getTrId();
 
-        ResponseDTO responseDTO = mobileService.verify(trId, otpValue);
+        ResponseDTO responseDTO = raonOtpService.verify(trId, otpValue);
         if(responseDTO.getResultCode().equals("000")) {
             return "loginProcess";
         }else{
@@ -70,7 +69,7 @@ public class MobileController {
     @PostMapping("/revoke")
     public String revoke(HttpSession session, Model model){
         String user_id = (String) session.getAttribute("s_id");
-        ResponseDTO responseDTO = mobileService.revoke(user_id);
+        ResponseDTO responseDTO = raonOtpService.revoke(user_id);
         if(responseDTO.getResultCode().equals("000")) {
             model.addAttribute("step", "device");
             model.addAttribute("msg", "장비를 등록해야 서비스 이용이 가능합니다.");
