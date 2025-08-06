@@ -32,25 +32,32 @@ public class RaonOtpController {
      */
     @PostMapping("/add")
     public String add(@RequestParam String deviceId, HttpSession session, Model model){
+
         String user_id = (String) session.getAttribute("s_id");
+
         ResponseDTO responseDTO = raonOtpService.add(user_id, deviceId);
         
         // 장비 등록 성공 시 입력한 deviceId 저장 및 응답메세지의 TrId 저장
         if(responseDTO.getResultCode().equals("000")) {
+
             RequestEntity requestEntity = requestRepository.findById(user_id).orElse(null);
+
             if (requestEntity != null) {
                 requestEntity.setDeviceId(deviceId);
                 requestEntity.setTrId(responseDTO.getResultData().getTrId());
                 requestRepository.save(requestEntity);
             }
+
             ResponseDTO authReuslt = raonOtpService.auth(user_id, deviceId, responseDTO.getResultData().getTrId());
+
             if(authReuslt.getResultCode().equals("000")){
                 model.addAttribute("step", "otp");
                 return "index";
+
             // 2.2 인증 실패 시, 장비 재등록
             }else{
                 model.addAttribute("step", "device");
-                model.addAttribute("msg", "OTP 서비스 인증에 실패하였습니다. 장비를 다시 등록해주세요.");
+                model.addAttribute("msg", responseDTO.getResultMsg());
                 return "index";
             }
         }else{

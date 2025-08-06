@@ -13,17 +13,6 @@ public class RaonOtpService {
     @Autowired
     private final RaonOtpHttpService raonOtpHttpService;
 
-    @Value("${ONE_PASS_ADD_COMMAND}")
-    private String regist;
-
-    @Value("${ONE_PASS_AUTH_COMMAND}")
-    private String auth;
-
-    @Value("${ONE_PASS_VERIFY_COMMAND}")
-    private String check;
-
-    @Value("${ONE_PASS_REVOKE_COMMAND}")
-    private String revoke;
 
     /**
      * 장비 등록
@@ -32,7 +21,7 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO add(String user_id, String deviceId) {
-        return raonOtpHttpService.sendOnePassAddRequest(regist, user_id, deviceId);
+        return raonOtpHttpService.sendOnePassAddRequest(user_id, deviceId);
     }
 
     /**
@@ -43,7 +32,7 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO auth(String user_id, String deviceId, String trId) {
-        return raonOtpHttpService.sendOnePassAuthRequest(auth, user_id, deviceId, trId);
+        return raonOtpHttpService.sendOnePassAuthRequest(user_id, deviceId, trId);
     }
 
     /**
@@ -53,7 +42,7 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO verify(String trId, String otpValue) {
-        return raonOtpHttpService.sendOnePassVerifyRequest(check, trId, otpValue);
+        return raonOtpHttpService.sendOnePassVerifyRequest(trId, otpValue);
     }
 
     /**
@@ -62,6 +51,6 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO revoke(String user_id) {
-        return raonOtpHttpService.sendOnePassRevokeReQuest(revoke, user_id);
+        return raonOtpHttpService.sendOnePassRevokeReQuest(user_id);
     }
 }
