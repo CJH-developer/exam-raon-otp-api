@@ -1,27 +1,25 @@
-package com.bandisnc.kobc_raon_otp.api.service;
+package com.bandisnc.kobc_raon_otp.http.service;
 
+import com.bandisnc.kobc_raon_otp.common.dto.RequestDTO;
 import com.bandisnc.kobc_raon_otp.common.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.Map;
 
 @Service(value = "RaonOtpHttpService")
 @RequiredArgsConstructor
-public class RaonOtpHttpService {
+public class HttpRequestService {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
-    private final HttpCallbackService  httpCallbackService;
+    private final HttpCallbackService httpCallbackService;
 
     @Value("${SITE_ID}")
     private String siteId;

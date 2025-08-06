@@ -1,17 +1,20 @@
-package com.bandisnc.kobc_raon_otp.api.service;
+package com.bandisnc.kobc_raon_otp.http.service;
 
+import com.bandisnc.kobc_raon_otp.common.dto.RequestDTO;
 import com.bandisnc.kobc_raon_otp.common.dto.ResponseDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 @Service("RaonOtpService")
 @RequiredArgsConstructor
-public class RaonOtpService {
+public class HttpService {
 
     @Autowired
-    private final RaonOtpHttpService raonOtpHttpService;
+    private final HttpRequestService httpRequestService;
 
 
     /**
@@ -21,8 +24,9 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO add(String user_id, String deviceId) {
-        return raonOtpHttpService.sendOnePassAddRequest(user_id, deviceId);
+        return httpRequestService.sendOnePassAddRequest(user_id, deviceId);
     }
+
 
     /**
      * OTP 서비스 인증
@@ -32,7 +36,7 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO auth(String user_id, String deviceId, String trId) {
-        return raonOtpHttpService.sendOnePassAuthRequest(user_id, deviceId, trId);
+        return httpRequestService.sendOnePassAuthRequest(user_id, deviceId, trId);
     }
 
     /**
@@ -42,7 +46,7 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO verify(String trId, String otpValue) {
-        return raonOtpHttpService.sendOnePassVerifyRequest(trId, otpValue);
+        return httpRequestService.sendOnePassVerifyRequest(trId, otpValue);
     }
 
     /**
@@ -51,6 +55,6 @@ public class RaonOtpService {
      * @return
      */
     public ResponseDTO revoke(String user_id) {
-        return raonOtpHttpService.sendOnePassRevokeReQuest(user_id);
+        return httpRequestService.sendOnePassRevokeReQuest(user_id);
     }
 }

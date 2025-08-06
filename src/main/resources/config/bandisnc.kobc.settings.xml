@@ -32,6 +32,9 @@
      -->
     <entry key="AUTH_TYPE">OTP01</entry>
 
+    <entry key="CONTENT_TYPE">application/json</entry>
+    <entry key="METHOD">POST</entry>
+
 </properties>
 
 
