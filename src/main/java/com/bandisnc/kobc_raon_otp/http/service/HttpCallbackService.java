@@ -58,14 +58,7 @@ public class HttpCallbackService {
 
         try{
             String wrap = objectMapper.writeValueAsString(map);
-            HttpConService.Result result = httpConService.callHttp(
-                    onePassUrl,
-                    method,
-                    wrap,
-                    content_type,
-                    null,
-                    null
-            );
+            HttpConService.Result result = httpConService.callHttp(onePassUrl, method, wrap, content_type, null, null);
 
             if(result.getHttpStatusCode() == 200){
                 String content = result.getContent();
@@ -74,14 +67,14 @@ public class HttpCallbackService {
                 if( "000".equals(responseDTO.getResultCode())){
                     return responseDTO;
                 }else{
-                    logger.info("[BAD_API_REQUEST]" + responseDTO.getResultMsg());
+                    logger.info("[FAIL_API_RESULT]" + responseDTO.getResultMsg());
                     return responseDTO;
                 }
             }else{
                 logger.info("[HTTP_STATUS_ERROR]" + result.getHttpStatusCode());
             }
         }catch (Exception e){
-            logger.info("[ONEPASS_API_CALL_ERROR]" + e.getMessage());
+            logger.info("[ONEPASS_API_REQUEST_ERROR]" + e.getMessage());
             e.printStackTrace();
         }
         return null;

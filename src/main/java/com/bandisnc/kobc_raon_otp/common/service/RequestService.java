@@ -20,13 +20,20 @@ public class RequestService {
     }
 
     public RequestDTO login(RequestDTO requestDTO) {
+        if(requestDTO.getId() == null || requestDTO.getId().trim().isEmpty()){
+            throw new IllegalArgumentException("아이디가 없습니다.");
+        }
+
         Optional<RequestEntity> findUser = requestRepository.findById(requestDTO.getId());
-        if(findUser.isPresent()) {
-            RequestEntity requestEntity = findUser.get();
-            if(requestEntity.getPassword().equals(requestDTO.getPassword())) {
-                return RequestDTO.toRequestDTO(requestEntity);
-            }else return null;
-        }else return null;
+        if(!findUser.isPresent()){
+            return null;
+        }
+
+        RequestEntity requestEntity = findUser.get();
+        if(!requestEntity.getPassword().equals(requestDTO.getPassword())){
+            return null;
+        }
+        return RequestDTO.toRequestDTO(requestEntity);
     }
 
 }

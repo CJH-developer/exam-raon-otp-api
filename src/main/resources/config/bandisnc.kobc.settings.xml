@@ -35,6 +35,10 @@
     <entry key="CONTENT_TYPE">application/json</entry>
     <entry key="METHOD">POST</entry>
 
+    <entry key="html.redirect.page">/</entry>
+    <entry key="html.index.form.page">index</entry>
+    <entry key="html.login.process.page">loginProcess</entry>
+
 </properties>
 
 
